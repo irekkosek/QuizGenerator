@@ -10,20 +10,20 @@ namespace QuizGenerator.Model
     {
         public struct Answer
         {
-            string content;
-            bool is_correct;
+           public string content;
+           public bool is_correct;
 
         }
         //public Question() { }
         //public Question(string name) { }
-        public int Id { get; set; }
-        public string Title { get; set; }
+        public int Id { get { return _id; } set { _id = value; } }
+        public string Title { get { return _title; } set { _title = value; } }
 
-        public Answer[] Answers { get; set; }
+        public List<Answer> Answers { get { return _answers; } set { _answers = value; } }
 
-        private string _id;
+        private int _id;
         private string _title;
-        private Answer[] _answers;
+        private List<Answer> _answers;
 
         public override string ToString()
         {

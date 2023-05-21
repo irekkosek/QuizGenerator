@@ -17,9 +17,47 @@ namespace QuizGenerator.ViewModel
         //żeby zaktualizowany został widok
 
 
-        private string quizTitle;
+        private string quizTitle = "Quiz Title";
 
         public string QuizTitle { get { return quizTitle; } set { quizTitle = value; } }
+
+        private string questionTitle = "Question Title";
+
+        public string QuestionTitle { get { return questionTitle; } set { questionTitle = value; } }
+
+        
+        //private BindingList<Question.Answer> answers = new BindingList<Question.Answer> {
+        //    new Question.Answer(){ is_correct=false, content="odp1" },
+        //    new Question.Answer(){ is_correct=false, content="" },
+        //    new Question.Answer(){ is_correct=false, content="" },
+        //    new Question.Answer(){ is_correct=true, content="odp4" }
+        //};
+
+        //public BindingList<Question.Answer> Answers { get { return answers; } set { answers = value; } }
+        //TODO: use BindingList like above
+
+        private string answer1content = "Answer 1";
+        private string answer2content = "Answer 2";
+        private string answer3content = "Answer 3";
+        private string answer4content = "Answer 4";
+
+        public string Answer1content { get { return answer1content; } set { answer1content = value; } }
+        public string Answer2content { get { return answer2content; } set { answer2content = value; } }
+        public string Answer3content { get { return answer3content; } set { answer3content = value; } }
+        public string Answer4content { get { return answer4content; } set { answer4content = value; } }
+
+        private bool answer1Is_correct = true;
+        private bool answer2Is_correct = false;
+        private bool answer3Is_correct = false;
+        private bool answer4Is_correct = false;
+
+        public bool Answer1Is_correct { get { return answer1Is_correct; } set { answer1Is_correct = value; } }
+        public bool Answer2Is_correct { get { return answer2Is_correct; } set { answer2Is_correct = value; } }
+        public bool Answer3Is_correct { get { return answer3Is_correct; } set { answer3Is_correct = value; } }
+        public bool Answer4Is_correct { get { return answer4Is_correct; } set { answer4Is_correct = value; } }
+
+
+
 
 
         //private Quiz currentQuiz;
@@ -87,6 +125,24 @@ namespace QuizGenerator.ViewModel
                     (p) => {
                         Quiz currentQuiz = new Quiz(); 
                         currentQuiz.Title = QuizTitle;
+                        Question question = new Question();
+                        question.Title = QuestionTitle;
+                        //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
+                        //question.Answers.AddRange(Answers.Select(i => new Question.Answer()
+                        //{
+                        //    is_correct = i.is_correct,
+                        //    content = i.content
+                        //}));
+                        //TODO: loop over like above
+                        question.Answers = new List<Question.Answer>
+                        {
+                            new Question.Answer() { is_correct = Answer1Is_correct, content = Answer1content },
+                            new Question.Answer() { is_correct = Answer2Is_correct, content = Answer2content },
+                            new Question.Answer() { is_correct = Answer3Is_correct, content = Answer3content },
+                            new Question.Answer() { is_correct = Answer4Is_correct, content = Answer4content }
+                        };
+                        currentQuiz.Questions = new List<Question>();
+                        currentQuiz.Questions.Add(question);
                         Quizes.Add(currentQuiz);
                         Test = "zmieniony";
                        

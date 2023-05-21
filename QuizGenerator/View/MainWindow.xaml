@@ -34,7 +34,7 @@
                                 <Setter Property="Width" Value="120" />
                             </Style>
                         </StackPanel.Resources>
-                        <TextBox Text="Question Title" FontSize="18" TextWrapping="Wrap"/>
+                        <TextBox x:Name="QuestionTitle" Text="{Binding QuestionTitle}" FontSize="18" TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Width="339">
                             <ComboBox Width="150" Height="20" SelectedIndex="0" Margin="0,10">
                                 <ComboBoxItem Content="Question #1"/>
@@ -62,12 +62,14 @@
                             </Style>
                         </StackPanel.Resources>
                         <StackPanel>
-                            <CheckBox IsChecked="False"/>
-                            <TextBox Text="Answer 1"/>
+                            <!--<CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answers[0].is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer1" Text="{Binding Answers[0].content}"/>-->
+                            <CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answer1Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer1" Text="{Binding Answer1content}"/>
                         </StackPanel>
                         <StackPanel>
-                            <CheckBox IsChecked="False"/>
-                            <TextBox Text="Answer 2"/>
+                            <CheckBox x:Name="CheckBoxAnswer2" IsChecked="{Binding Answer2Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer2" Text="{Binding Answer2content}"/>
                         </StackPanel>
                         <StackPanel>
                             <CheckBox IsChecked="False"/>
