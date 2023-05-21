@@ -1,0 +1,145 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuizGenerator"
+        xmlns:Properties="clr-namespace:QuizGenerator.Properties" 
+        xmlns:viewmodel="clr-namespace:QuizGenerator.ViewModel" 
+        xmlns:Model="clr-namespace:QuizGenerator.Model" x:Class="QuizGenerator.View.MainWindow" 
+        mc:Ignorable="d"
+        Title="Quiz Generator" Height="450" Width="800">
+
+    <!--d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+    nie wolno używać w atrybutach tagu <Window takiego sposobu definiowania
+    Data Contextu, nie działa on poprawnie. Zamiast tego należy używać poniższego sposobu:-->
+    <Window.DataContext>
+        <viewmodel:MainViewModel x:Name="mainViewModel"/>
+    </Window.DataContext>
+
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="10">
+            <TextBox x:Name="QuizTitle" Text="{Binding QuizTitle}"  FontSize="24" Margin="0,0 ,0, 10" Width="500" TextWrapping="Wrap"/>
+            <Border BorderBrush="LightBlue" BorderThickness="1">
+                <StackPanel Margin="10" Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Setter Property="Margin" Value="0,0,40,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel Width="350" HorizontalAlignment="Left">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Margin" Value="0,10,10,0"/>
+                                <Setter Property="Width" Value="120" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBox Text="Question Title" FontSize="18" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal" Width="339">
+                            <ComboBox Width="150" Height="20" SelectedIndex="0" Margin="0,10">
+                                <ComboBoxItem Content="Question #1"/>
+                                <ComboBoxItem Content="Question #2"/>
+                                <ComboBoxItem Content="Question #3"/>
+                                <ComboBoxItem Content="Question #4"/>
+                            </ComboBox>
+                            <Button Content="Add new" Width="70" Height="20" Margin="10, 0" Background="LightBlue" HorizontalAlignment="Left"/>
+                            <Button Content="Delete" Width="70" Height="20" Margin="0, 0" Background="#fff" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Margin" Value="0,10,0,0"/>
+                                <Setter Property="Orientation" Value="Horizontal"/>
+                            </Style>
+                            <Style TargetType="{x:Type CheckBox}">
+                                <Setter Property="Margin" Value="10,0"/>
+                            </Style>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="Margin" Value="10,0"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Width" Value="150"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <StackPanel>
+                            <CheckBox IsChecked="False"/>
+                            <TextBox Text="Answer 1"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox IsChecked="False"/>
+                            <TextBox Text="Answer 2"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox IsChecked="False"/>
+                            <TextBox Text="Answer 3"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox IsChecked="False"/>
+                            <TextBox Text="Answer 4"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="LightBlue" BorderThickness="1" Margin="0, 10">
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Margin" Value="0,0,20,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Border BorderBrush="LightBlue" BorderThickness="1">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Time in seconds:" FontSize="18"/>
+                            <Slider Minimum="0" Maximum="20" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+            </Border>
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="0,0,10,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="ButtonAddSaveQuiz" Content="Add/Save Quiz" Width="150" Height="20" Background="LightBlue" Command="{Binding ButtonAddSaveQuiz_Click}" />
+                <Button Content="Save to database" Width="150" Height="20" Background="#fff"/>
+                <Button Content="Load from database" Width="150" Height="20" Background="#fff"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Margin="10">
+            <Border BorderBrush="LightBlue" BorderThickness="1">
+                <ListBox x:Name="ListBoxQuizes" Width="240" MinHeight="200"
+                       ItemsSource="{Binding Quizes}" >
+                    <!--<ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>-->
+                    <!--powyższy kod nie jest niezbędnny, ale pozwala na bardziej szczegółowe dostosowanie Itemów
+                    należy pamiętać o tym by Quizes było typu BindingList<Quiz> -->
+                </ListBox>
+                
+                <!--<ListBox x:Name="ListBoxQuizes" Width="240" MinHeight="200"
+                       ItemsSource="{Binding Quizes}" DataContext="{Binding Quizes}"  >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Quizes}" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>-->
+                <!--powyższy kod to niedziałajacy stary kod. 
+                Należy unikać stosowania DataContext jeżeli został wcześniej ustalony
+                W Data Template przyjmowane są Propertisy zawartej w Liście (tutaj Quiz), a nie z ViewModel.
+                Wybieramy więc Properties Title z klasy Quiz-->
+
+            </Border>
+            <TextBox  Text="{Binding Test}" ></TextBox>
+        </StackPanel>
+    </StackPanel>
+</Window>
