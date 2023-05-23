@@ -16,6 +16,9 @@ namespace QuizGenerator.Model
         }
         public Quiz(string name) { }
 
+        private int _id;
+        public int Id { get { return _id; } set { _id = value; } }
+
         private string _title;
         public string Title { get { return _title; } set { _title = value; } }
 

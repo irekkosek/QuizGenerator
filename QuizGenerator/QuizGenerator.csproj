@@ -78,6 +78,7 @@
     <Compile Include="Model\Lottery.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Quiz.cs" />
+    <Compile Include="Model\QuizDataBase.cs" />
     <Compile Include="ViewModel\BaseClass\BaseViewModel.cs" />
     <Compile Include="ViewModel\BaseClass\RelayCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

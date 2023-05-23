@@ -36,14 +36,17 @@
                         </StackPanel.Resources>
                         <TextBox x:Name="QuestionTitle" Text="{Binding QuestionTitle}" FontSize="18" TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Width="339">
-                            <ComboBox Width="150" Height="20" SelectedIndex="0" Margin="0,10">
-                                <ComboBoxItem Content="Question #1"/>
+                            <ComboBox Width="150" Height="20" SelectedIndex="0" Margin="0,10"
+                                      ItemsSource="{Binding Questions}" SelectedItem="{Binding SelectedQuestion}" >
+                                <!--<ComboBoxItem Content="Question #1"/>
                                 <ComboBoxItem Content="Question #2"/>
                                 <ComboBoxItem Content="Question #3"/>
-                                <ComboBoxItem Content="Question #4"/>
+                                <ComboBoxItem Content="Question #4"/>-->
                             </ComboBox>
-                            <Button Content="Add new" Width="70" Height="20" Margin="10, 0" Background="LightBlue" HorizontalAlignment="Left"/>
-                            <Button Content="Delete" Width="70" Height="20" Margin="0, 0" Background="#fff" HorizontalAlignment="Left"/>
+                            <Button x:Name="ButtonAddSaveQuestion"  Content="Add new" Width="70" Height="20" Margin="10, 0"
+                                    Background="LightBlue" HorizontalAlignment="Left" Command="{Binding ButtonAddSaveQuestion_Click}"/>
+                            <Button Content="Delete" Width="70" Height="20" Margin="0, 0" Background="#fff" HorizontalAlignment="Left"
+                                    Command="{Binding ButtonDeleteQuestion_Click}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
@@ -62,22 +65,28 @@
                             </Style>
                         </StackPanel.Resources>
                         <StackPanel>
-                            <!--<CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answers[0].is_correct}"/>
-                            <TextBox x:Name="TextBoxAnswer1" Text="{Binding Answers[0].content}"/>-->
-                            <CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answer1Is_correct}"/>
+                            <!--<CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answers[0].Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer1" Text="{Binding Answers[0].Content}" />-->
+                            <CheckBox x:Name="CheckBoxAnswer1" IsChecked="{Binding Answer1Is_correct, Mode=TwoWay}"/>
                             <TextBox x:Name="TextBoxAnswer1" Text="{Binding Answer1content}"/>
                         </StackPanel>
                         <StackPanel>
-                            <CheckBox x:Name="CheckBoxAnswer2" IsChecked="{Binding Answer2Is_correct}"/>
+                            <!--<CheckBox x:Name="CheckBoxAnswer2" IsChecked="{Binding Answers[1].Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer2" Text="{Binding Answers[1].Content}"/>-->
+                            <CheckBox x:Name="CheckBoxAnswer2" IsChecked="{Binding Answer2Is_correct, Mode=TwoWay}"/>
                             <TextBox x:Name="TextBoxAnswer2" Text="{Binding Answer2content}"/>
                         </StackPanel>
                         <StackPanel>
-                            <CheckBox IsChecked="False"/>
-                            <TextBox Text="Answer 3"/>
+                            <!--<CheckBox x:Name="CheckBoxAnswer3" IsChecked="{Binding Answers[2].Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer3" Text="{Binding Answers[2].Content}"/>-->
+                            <CheckBox x:Name="CheckBoxAnswer3" IsChecked="{Binding Answer3Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer3" Text="{Binding Answer3content}"/>
                         </StackPanel>
                         <StackPanel>
-                            <CheckBox IsChecked="False"/>
-                            <TextBox Text="Answer 4"/>
+                            <!--<CheckBox x:Name="CheckBoxAnswer4" IsChecked="{Binding Answers[3].Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer4" Text="{Binding Answers[3].Content}"/>-->
+                            <CheckBox x:Name="CheckBoxAnswer4" IsChecked="{Binding Answer4Is_correct}"/>
+                            <TextBox x:Name="TextBoxAnswer4" Text="{Binding Answer4content}"/>
                         </StackPanel>
                     </StackPanel>
 
@@ -93,7 +102,7 @@
                     <Border BorderBrush="LightBlue" BorderThickness="1">
                         <StackPanel Margin="10">
                             <TextBlock Text="Time in seconds:" FontSize="18"/>
-                            <Slider Minimum="0" Maximum="20" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"/>
+                            <Slider Value="{Binding QuizTimeSpan}" Minimum="0" Maximum="20" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -113,7 +122,7 @@
         <StackPanel Margin="10">
             <Border BorderBrush="LightBlue" BorderThickness="1">
                 <ListBox x:Name="ListBoxQuizes" Width="240" MinHeight="200"
-                       ItemsSource="{Binding Quizes}" >
+                       ItemsSource="{Binding Quizes}" SelectedItem="{Binding SelectedQuiz}" >
                     <!--<ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>

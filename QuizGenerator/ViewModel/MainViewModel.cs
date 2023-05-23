@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 using QuizGenerator.Model;
@@ -17,6 +18,7 @@ namespace QuizGenerator.ViewModel
         //żeby zaktualizowany został widok
 
 
+
         private string quizTitle = "Quiz Title";
 
         public string QuizTitle { get { return quizTitle; } set { quizTitle = value; } }
@@ -25,15 +27,99 @@ namespace QuizGenerator.ViewModel
 
         public string QuestionTitle { get { return questionTitle; } set { questionTitle = value; } }
 
-        
+        private Question selectedQuestion;
+
+        public Question SelectedQuestion { get { return selectedQuestion; }
+            set {
+                if (selectedQuestion != value){
+                    selectedQuestion = value;
+                    Answer1content = selectedQuestion.Answers[0].Content ?? "";
+                    Answer2content = selectedQuestion.Answers[1].Content ?? "";
+                    Answer3content = selectedQuestion.Answers[2].Content ?? "";
+                    Answer4content = selectedQuestion.Answers[3].Content ?? "";
+
+                    Answer1Is_correct = selectedQuestion.Answers[0].Is_correct;
+                    Answer2Is_correct = selectedQuestion.Answers[1].Is_correct;
+                    Answer3Is_correct = selectedQuestion.Answers[2].Is_correct;
+                    Answer4Is_correct = selectedQuestion.Answers[3].Is_correct;
+
+                }
+            } 
+        }
+
+        private Quiz selectedQuiz;
+
+        public Quiz SelectedQuiz
+        {
+            get { return selectedQuiz; }
+            set
+            {
+                if (selectedQuiz != value)
+                {
+                    selectedQuiz = value;
+                    QuizTitle = selectedQuiz.Title;
+                    Questions = new BindingList<Question>();
+                    foreach (Question question in selectedQuiz.Questions)
+                    {
+                        Questions.Add(question);
+                        selectedQuestion= question;
+                    }
+
+                    //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
+                    //    listy/bindinglisty/pojedynczych obiektów (iteratorem?) Questions 
+
+                    //selectedQuestion = Questions
+
+                    //Questions = SelectedQuiz.Questions
+                    //Answer1content = SelectedQuiz.Questions[0].Answers[0].Content;
+                    //Answer2content = SelectedQuiz.Questions[0].Answers[1].Content;
+                    //Answer3content = SelectedQuiz.Questions[0].Answers[2].Content;
+                    //Answer4content = SelectedQuiz.Questions[0].Answers[3].Content;
+
+                    //Answer1Is_correct = SelectedQuiz.Questions[0].Answers[0].Is_correct;
+                    //Answer2Is_correct = SelectedQuiz.Questions[0].Answers[1].Is_correct;
+                    //Answer3Is_correct = SelectedQuiz.Questions[0].Answers[2].Is_correct;
+                    //Answer4Is_correct = SelectedQuiz.Questions[0].Answers[3].Is_correct;
+
+                }
+            }
+        }
+
+
+
+        //private BindingList<Question> questions = new BindingList<Question> {
+        //    new Question(){ Id=1, Title="Question" }
+        //};
+        private BindingList<Question> questions = new BindingList<Question> ();
+
+        public BindingList<Question> Questions
+        {
+            get { return questions; }
+            private set
+            {
+                questions = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Questions)));
+            }
+        }
+
+
         //private BindingList<Question.Answer> answers = new BindingList<Question.Answer> {
-        //    new Question.Answer(){ is_correct=false, content="odp1" },
-        //    new Question.Answer(){ is_correct=false, content="" },
-        //    new Question.Answer(){ is_correct=false, content="" },
-        //    new Question.Answer(){ is_correct=true, content="odp4" }
+        //    new Question.Answer(){ Is_correct=false, Content="Answer 1" },
+        //    new Question.Answer(){ Is_correct=false, Content="Answer 2" },
+        //    new Question.Answer(){ Is_correct=false, Content="Answer 3" },
+        //    new Question.Answer(){ Is_correct=false, Content="Answer 4" }
         //};
 
-        //public BindingList<Question.Answer> Answers { get { return answers; } set { answers = value; } }
+        ////public BindingList<Question.Answer> Answers { get { return answers; } set { answers = value; } }
+        //public BindingList<Question.Answer> Answers {
+        //    get { return answers; }
+        //    set
+        //    {
+        //        answers = value;
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answers)));
+        //    }
+        //}
+
         //TODO: use BindingList like above
 
         private string answer1content = "Answer 1";
@@ -41,23 +127,34 @@ namespace QuizGenerator.ViewModel
         private string answer3content = "Answer 3";
         private string answer4content = "Answer 4";
 
-        public string Answer1content { get { return answer1content; } set { answer1content = value; } }
-        public string Answer2content { get { return answer2content; } set { answer2content = value; } }
-        public string Answer3content { get { return answer3content; } set { answer3content = value; } }
-        public string Answer4content { get { return answer4content; } set { answer4content = value; } }
+        public string Answer1content { get { return answer1content; } 
+            set {answer1content = value;PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1content))); }
+        }
+        public string Answer2content { get { return answer2content; } 
+            set { answer2content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2content))); } }
+        public string Answer3content { get { return answer3content; } 
+            set { answer3content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3content))); } }
+        public string Answer4content { get { return answer4content; } 
+            set { answer4content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4content))); } }
 
-        private bool answer1Is_correct = true;
+        private bool answer1Is_correct = false;
         private bool answer2Is_correct = false;
         private bool answer3Is_correct = false;
         private bool answer4Is_correct = false;
 
-        public bool Answer1Is_correct { get { return answer1Is_correct; } set { answer1Is_correct = value; } }
-        public bool Answer2Is_correct { get { return answer2Is_correct; } set { answer2Is_correct = value; } }
-        public bool Answer3Is_correct { get { return answer3Is_correct; } set { answer3Is_correct = value; } }
-        public bool Answer4Is_correct { get { return answer4Is_correct; } set { answer4Is_correct = value; } }
+        public bool Answer1Is_correct { get { return answer1Is_correct; }
+            set { answer1Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1Is_correct))); } }
+        public bool Answer2Is_correct { get { return answer2Is_correct; } 
+            set { answer2Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2Is_correct))); } }
+        public bool Answer3Is_correct { get { return answer3Is_correct; }
+            set { answer3Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3Is_correct))); } }
+        public bool Answer4Is_correct { get { return answer4Is_correct; }
+            set { answer4Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4Is_correct))); } }
 
 
 
+        private int quizTimeSpan = 20;
+        public int QuizTimeSpan { get => quizTimeSpan; set => quizTimeSpan = value; }
 
 
         //private Quiz currentQuiz;
@@ -68,6 +165,9 @@ namespace QuizGenerator.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Model.Lottery lottery = new Model.Lottery();
+
+
+
 
         //private List<Quiz> quizes;
 
@@ -109,7 +209,65 @@ namespace QuizGenerator.ViewModel
             }
         }
 
+        //polecenie 
+        private ICommand buttonDeleteQuestion_Click;
 
+        public ICommand ButtonDeleteQuestion_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonDeleteQuestion_Click ?? (buttonDeleteQuestion_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) => {
+                        Questions.Remove(selectedQuestion);
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+            }
+        }
+
+        //polecenie 
+        private ICommand buttonAddSaveQuestion_Click;
+
+        public ICommand ButtonAddSaveQuestion_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonAddSaveQuestion_Click ?? (buttonAddSaveQuestion_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) => {
+                        Question question = new Question();
+                        question.Title = QuestionTitle;
+                        //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
+                        question.Answers = new List<Question.Answer>();
+                        //question.Answers.AddRange(Answers.Select(i => new Question.Answer()
+                        //{
+                        //    Is_correct = i.Is_correct,
+                        //    Content = i.Content
+                        //}));
+                        //TODO: loop over like above
+                        question.Answers = new List<Question.Answer>
+                        {
+                            new Question.Answer() { Is_correct = Answer1Is_correct, Content = Answer1content },
+                            new Question.Answer() { Is_correct = Answer2Is_correct, Content = Answer2content },
+                            new Question.Answer() { Is_correct = Answer3Is_correct, Content = Answer3content },
+                            new Question.Answer() { Is_correct = Answer4Is_correct, Content = Answer4content }
+                        };
+                        Questions.Add(question);
+                        SelectedQuestion = question;
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+            }
+        }
 
         //polecenie 
         private ICommand buttonAddSaveQuiz_Click;
@@ -125,24 +283,16 @@ namespace QuizGenerator.ViewModel
                     (p) => {
                         Quiz currentQuiz = new Quiz(); 
                         currentQuiz.Title = QuizTitle;
-                        Question question = new Question();
-                        question.Title = QuestionTitle;
-                        //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
-                        //question.Answers.AddRange(Answers.Select(i => new Question.Answer()
-                        //{
-                        //    is_correct = i.is_correct,
-                        //    content = i.content
-                        //}));
-                        //TODO: loop over like above
-                        question.Answers = new List<Question.Answer>
-                        {
-                            new Question.Answer() { is_correct = Answer1Is_correct, content = Answer1content },
-                            new Question.Answer() { is_correct = Answer2Is_correct, content = Answer2content },
-                            new Question.Answer() { is_correct = Answer3Is_correct, content = Answer3content },
-                            new Question.Answer() { is_correct = Answer4Is_correct, content = Answer4content }
-                        };
+
                         currentQuiz.Questions = new List<Question>();
-                        currentQuiz.Questions.Add(question);
+                        currentQuiz.Questions.AddRange(Questions.Select(i => new Question()
+                        {
+                            Id = i.Id,
+                            Title = i.Title,
+                            Answers = i.Answers,
+                        }));
+
+                        currentQuiz.TimeSpan = QuizTimeSpan;
                         Quizes.Add(currentQuiz);
                         Test = "zmieniony";
                        

@@ -10,9 +10,15 @@ namespace QuizGenerator.Model
     {
         public struct Answer
         {
-           public string content;
-           public bool is_correct;
+            private string content;
+            private bool is_correct;
 
+            public bool Is_correct { 
+                get => is_correct;
+                set { is_correct = value; 
+                }
+            }
+            public string Content { get => content; set => content = value; }
         }
         //public Question() { }
         //public Question(string name) { }

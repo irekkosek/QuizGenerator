@@ -20,7 +20,7 @@ namespace QuizGenerator.Model
             SQLiteCommand command;
 
             command = conn.CreateCommand();
-            command.CommandText = "SELECT * FROM Tabela";
+            command.CommandText = "SELECT * FROM Answers JOIN Questions on Answers.question_id = Questions.id JOIN Quizzes ON Questions.Quiz_ID = Quizzes.ID;";
             reader = command.ExecuteReader();
 
             while (reader.Read())
