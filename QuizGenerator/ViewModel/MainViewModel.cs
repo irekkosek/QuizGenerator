@@ -29,9 +29,13 @@ namespace QuizGenerator.ViewModel
 
         private Question selectedQuestion;
 
-        public Question SelectedQuestion { get { return selectedQuestion; }
-            set {
-                if (selectedQuestion != value){
+        public Question SelectedQuestion
+        {
+            get { return selectedQuestion; }
+            set
+            {
+                if (selectedQuestion != value)
+                {
                     selectedQuestion = value;
                     Answer1content = selectedQuestion.Answers[0].Content ?? "";
                     Answer2content = selectedQuestion.Answers[1].Content ?? "";
@@ -44,7 +48,7 @@ namespace QuizGenerator.ViewModel
                     Answer4Is_correct = selectedQuestion.Answers[3].Is_correct;
 
                 }
-            } 
+            }
         }
 
         private Quiz selectedQuiz;
@@ -62,7 +66,7 @@ namespace QuizGenerator.ViewModel
                     foreach (Question question in selectedQuiz.Questions)
                     {
                         Questions.Add(question);
-                        selectedQuestion= question;
+                        selectedQuestion = question;
                     }
 
                     //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
@@ -90,7 +94,7 @@ namespace QuizGenerator.ViewModel
         //private BindingList<Question> questions = new BindingList<Question> {
         //    new Question(){ Id=1, Title="Question" }
         //};
-        private BindingList<Question> questions = new BindingList<Question> ();
+        private BindingList<Question> questions = new BindingList<Question>();
 
         public BindingList<Question> Questions
         {
@@ -127,29 +131,52 @@ namespace QuizGenerator.ViewModel
         private string answer3content = "Answer 3";
         private string answer4content = "Answer 4";
 
-        public string Answer1content { get { return answer1content; } 
-            set {answer1content = value;PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1content))); }
+        public string Answer1content
+        {
+            get { return answer1content; }
+            set { answer1content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1content))); }
         }
-        public string Answer2content { get { return answer2content; } 
-            set { answer2content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2content))); } }
-        public string Answer3content { get { return answer3content; } 
-            set { answer3content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3content))); } }
-        public string Answer4content { get { return answer4content; } 
-            set { answer4content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4content))); } }
+        public string Answer2content
+        {
+            get { return answer2content; }
+            set { answer2content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2content))); }
+        }
+        public string Answer3content
+        {
+            get { return answer3content; }
+            set { answer3content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3content))); }
+        }
+        public string Answer4content
+        {
+            get { return answer4content; }
+            set { answer4content = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4content))); }
+        }
 
         private bool answer1Is_correct = false;
         private bool answer2Is_correct = false;
         private bool answer3Is_correct = false;
         private bool answer4Is_correct = false;
 
-        public bool Answer1Is_correct { get { return answer1Is_correct; }
-            set { answer1Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1Is_correct))); } }
-        public bool Answer2Is_correct { get { return answer2Is_correct; } 
-            set { answer2Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2Is_correct))); } }
-        public bool Answer3Is_correct { get { return answer3Is_correct; }
-            set { answer3Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3Is_correct))); } }
-        public bool Answer4Is_correct { get { return answer4Is_correct; }
-            set { answer4Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4Is_correct))); } }
+        public bool Answer1Is_correct
+        {
+            get { return answer1Is_correct; }
+            set { answer1Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer1Is_correct))); }
+        }
+        public bool Answer2Is_correct
+        {
+            get { return answer2Is_correct; }
+            set { answer2Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer2Is_correct))); }
+        }
+        public bool Answer3Is_correct
+        {
+            get { return answer3Is_correct; }
+            set { answer3Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer3Is_correct))); }
+        }
+        public bool Answer4Is_correct
+        {
+            get { return answer4Is_correct; }
+            set { answer4Is_correct = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer4Is_correct))); }
+        }
 
 
 
@@ -201,9 +228,11 @@ namespace QuizGenerator.ViewModel
 
         //stara implementacja Test która nie powiadamia o zmianie
         //public string Test { get => test; set => test = value; }
-        public string Test { 
+        public string Test
+        {
             get => test;
-            set {
+            set
+            {
                 test = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Test)));
             }
@@ -220,7 +249,8 @@ namespace QuizGenerator.ViewModel
                 //pomocniczy typ RelayCommand
                 return buttonDeleteQuestion_Click ?? (buttonDeleteQuestion_Click = new BaseClass.RelayCommand(
                     //co wykonuje polecenie
-                    (p) => {
+                    (p) =>
+                    {
                         Questions.Remove(selectedQuestion);
                     }
                     ,
@@ -241,7 +271,8 @@ namespace QuizGenerator.ViewModel
                 //pomocniczy typ RelayCommand
                 return buttonAddSaveQuestion_Click ?? (buttonAddSaveQuestion_Click = new BaseClass.RelayCommand(
                     //co wykonuje polecenie
-                    (p) => {
+                    (p) =>
+                    {
                         Question question = new Question();
                         question.Title = QuestionTitle;
                         //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
@@ -280,8 +311,9 @@ namespace QuizGenerator.ViewModel
                 //pomocniczy typ RelayCommand
                 return buttonAddSaveQuiz_Click ?? (buttonAddSaveQuiz_Click = new BaseClass.RelayCommand(
                     //co wykonuje polecenie
-                    (p) => {
-                        Quiz currentQuiz = new Quiz(); 
+                    (p) =>
+                    {
+                        Quiz currentQuiz = new Quiz();
                         currentQuiz.Title = QuizTitle;
 
                         currentQuiz.Questions = new List<Question>();
@@ -295,7 +327,7 @@ namespace QuizGenerator.ViewModel
                         currentQuiz.TimeSpan = QuizTimeSpan;
                         Quizes.Add(currentQuiz);
                         Test = "zmieniony";
-                       
+
                     }
                     ,
                     //warunek kiedy może je wykonać
@@ -303,6 +335,52 @@ namespace QuizGenerator.ViewModel
                     );
             }
         }
+        private ICommand buttonAddSaveToDB_Click;
 
+        public ICommand ButtonAddSaveToDB_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonAddSaveToDB_Click ?? (buttonAddSaveToDB_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) =>
+                    {
+
+                        DataWrite dataWrite = new DataWrite();
+                        dataWrite.InsertQuiz(30, "nowy Quiz", 20);
+                        dataWrite.InsertQuestion(16, "pytanie?", 30);
+                        dataWrite.InsertAnswers(20, "odpowiedz1", true, 16);
+
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+
+            }
+        }
+        private ICommand buttonLoadFromDB_Click;
+
+        public ICommand ButtonLoadFromDB_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonLoadFromDB_Click ?? (buttonLoadFromDB_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) =>
+                    {
+                        DataAccess.ReadData();
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+
+            }
+        }
     }
 }

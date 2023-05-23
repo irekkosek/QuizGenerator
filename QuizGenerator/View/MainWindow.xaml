@@ -115,8 +115,8 @@
                     </Style>
                 </StackPanel.Resources>
                 <Button x:Name="ButtonAddSaveQuiz" Content="Add/Save Quiz" Width="150" Height="20" Background="LightBlue" Command="{Binding ButtonAddSaveQuiz_Click}" />
-                <Button Content="Save to database" Width="150" Height="20" Background="#fff"/>
-                <Button Content="Load from database" Width="150" Height="20" Background="#fff"/>
+                <Button Content="Save to database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonAddSaveToDB_Click}" />
+                <Button Content="Load from database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonLoadFromDB_Click}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Margin="10">

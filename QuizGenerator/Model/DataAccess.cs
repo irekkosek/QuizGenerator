@@ -12,7 +12,7 @@ namespace QuizGenerator.Model
     // żeby poprawnie obsługiwać przechowywanie obiektów w SQLite
     static class DataAccess
     {
-        static SQLiteConnection conn = new SQLiteConnection(@"Data Source=D:\bazaTest.db;Version=3");
+        static SQLiteConnection conn = new SQLiteConnection(@"Data Source=QuizSolver.db;Version=3");
 
         private static void ReadData(SQLiteConnection conn)
         {
@@ -25,11 +25,18 @@ namespace QuizGenerator.Model
 
             while (reader.Read())
             {
-                long id = (long)reader["id"];
-                string imie = (string)reader["imie"];
-                string nazwisko = (string)reader["nazwisko"];
-                //kolejne atyrbuty
-                Console.WriteLine($"{id} {imie} {nazwisko}");
+                Quiz readquiz = new Quiz();
+                int answer_id = (int)reader.GetInt32(0);
+                string Content = (string)reader["Content"];
+                bool Is_Correct = (bool)reader["Is_Correct"];
+                Int64 Question_ID = (int)reader.GetInt32(4);
+                string QuestionTitle = (string)reader["Title"];
+                int Quiz_ID = (int)reader.GetInt32(7);
+                string  QuizTitle= (string)reader["title"];
+                int timelimit = (int)reader["timelimit"];
+
+                 //kolejne atyrbuty
+                Console.WriteLine($"{ answer_id} {Content } { Is_Correct } { Question_ID } { QuestionTitle } { Quiz_ID } { QuizTitle } { timelimit }");
             }
 
 
