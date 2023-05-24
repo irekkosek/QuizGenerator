@@ -77,6 +77,7 @@
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\DataAccess.cs" />
     <Compile Include="Model\DataWrite.cs" />
+    <Compile Include="Model\Encode.cs" />
     <Compile Include="Model\Lottery.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Quiz.cs" />

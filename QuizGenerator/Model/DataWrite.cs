@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,20 @@ namespace QuizGenerator.Model
     internal class DataWrite
     {
         private string connectionString = @"Data Source=QuizSolver.db;Version=3";
+        public void ClearDBBeforeWrite()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string sql = "DELETE FROM Answers;DELETE FROM Questions;DELETE FROM Quizzes;";
+
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
         public void InsertQuestion(int Question_ID, string QuestionTitle, int Quiz_ID)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -22,7 +37,7 @@ namespace QuizGenerator.Model
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Question_ID", Question_ID);
-                    command.Parameters.AddWithValue("@QuestionTitle",QuestionTitle );
+                    command.Parameters.AddWithValue("@QuestionTitle", Encode.Base64Encode(QuestionTitle));
                     command.Parameters.AddWithValue("@Quiz_ID", Quiz_ID);
                     command.ExecuteNonQuery();
                 }
@@ -40,7 +55,7 @@ namespace QuizGenerator.Model
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Quiz_ID", Quiz_ID);
-                    command.Parameters.AddWithValue("@QuizTitle", QuizTitle);
+                    command.Parameters.AddWithValue("@QuizTitle", Encode.Base64Encode(QuizTitle));
                     command.Parameters.AddWithValue("@timeLimit", timelimit);
                     command.ExecuteNonQuery();
                 }
@@ -58,7 +73,7 @@ namespace QuizGenerator.Model
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Answer_ID", Answer_ID);
-                    command.Parameters.AddWithValue("@Content", Content);
+                    command.Parameters.AddWithValue("@Content", Encode.Base64Encode(Content));
                     command.Parameters.AddWithValue("@is_Correct", is_Correct);
                     command.Parameters.AddWithValue("@Question_ID", Question_ID);
                     command.ExecuteNonQuery();
