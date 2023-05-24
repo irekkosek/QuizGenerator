@@ -9,8 +9,15 @@ using System.Xml.Linq;
 
 namespace QuizGenerator.Model
 {
-    internal class Quiz
+    public class Quiz
     {
+        public Quiz(int id,string title, List<Question> questions, int time)
+        {
+            Id = id;
+            Title = title;
+            Questions = questions;
+            TimeSpan = time;
+        }
         public Quiz() {
             List<Question> _questions = new List<Question>();
         }
@@ -25,8 +32,8 @@ namespace QuizGenerator.Model
         private List<Question> _questions;
         public List<Question> Questions { get { return _questions; } set { _questions = value; } }
 
-        private double _time_limit;
-        public double TimeSpan { get { return _time_limit; } set { _time_limit = value; } }
+        private int _time_limit;
+        public int TimeSpan { get { return _time_limit; } set { _time_limit = value; } }
 
         public override string ToString()
         {

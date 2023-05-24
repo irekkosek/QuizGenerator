@@ -349,10 +349,21 @@ namespace QuizGenerator.ViewModel
                     {
 
                         DataWrite dataWrite = new DataWrite();
-                        dataWrite.InsertQuiz(30, "nowy Quiz", 20);
-                        dataWrite.InsertQuestion(16, "pytanie?", 30);
-                        dataWrite.InsertAnswers(20, "odpowiedz1", true, 16);
+                        foreach (Quiz quiz in Quizes)
+                        {
+                            dataWrite.InsertQuiz(quiz.Id, quiz.Title, quiz.TimeSpan);
+                            foreach(Question question in quiz.Questions)
+                            {
+                                dataWrite.InsertQuestion(question.Id,question.Title ,quiz.Id);
+                                int answer_id = 1;
+                                foreach(Question.Answer answer in question.Answers)
+                                {
+                                    dataWrite.InsertAnswers(answer_id, answer.Content, answer.Is_correct, question.Id);
+                                    answer_id++;
+                                }
+                            }
 
+                        }
                     }
                     ,
                     //warunek kiedy może je wykonać
@@ -373,7 +384,9 @@ namespace QuizGenerator.ViewModel
                     //co wykonuje polecenie
                     (p) =>
                     {
-                        DataAccess.ReadData();
+                        DataAccess dataAccess = new DataAccess();
+                         quizes = dataAccess.LoadData();
+                        
                     }
                     ,
                     //warunek kiedy może je wykonać

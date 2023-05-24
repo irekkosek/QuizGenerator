@@ -6,22 +6,39 @@ using System.Threading.Tasks;
 
 namespace QuizGenerator.Model
 {
-    internal class Question
+    public class Question
     {
+        public Question(int Question_ID, string title, List<Question.Answer> answers)
+            {
+                Id = Question_ID;
+                Title = title;
+                Answers = answers;
+            }
         public struct Answer
         {
+            public Answer(string content, bool is_correct)
+            {
+
+                this.is_correct = is_correct;
+                this.content = content;
+            }
+            //private int id;
             private string content;
             private bool is_correct;
 
-            public bool Is_correct { 
+            public bool Is_correct
+            {
                 get => is_correct;
-                set { is_correct = value; 
+                set
+                {
+                    is_correct = value;
                 }
             }
             public string Content { get => content; set => content = value; }
+            //public int Id { get => id; set => id = value; }
         }
-        //public Question() { }
-        //public Question(string name) { }
+        public Question() { }
+        public Question(string name) { }
         public int Id { get { return _id; } set { _id = value; } }
         public string Title { get { return _title; } set { _title = value; } }
 
