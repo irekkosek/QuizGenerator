@@ -50,7 +50,7 @@ namespace QuizGenerator.Model
 
         public override string ToString()
         {
-            return $"{_title} #{_id}";
+            return $"{_title}";
         }
 
     }

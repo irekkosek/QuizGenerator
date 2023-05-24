@@ -20,14 +20,14 @@
     <StackPanel Orientation="Horizontal">
         <StackPanel Margin="10">
             <TextBox x:Name="QuizTitle" Text="{Binding QuizTitle}"  FontSize="24" Margin="0,0 ,0, 10" Width="500" TextWrapping="Wrap"/>
-            <Border BorderBrush="LightBlue" BorderThickness="1">
+            <Border BorderBrush="LightBlue" BorderThickness="1" IsEnabled="{Binding IsQuizSelected}">
                 <StackPanel Margin="10" Orientation="Vertical">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type StackPanel}">
                             <Setter Property="Margin" Value="0,0,40,0"/>
                         </Style>
                     </StackPanel.Resources>
-                    <StackPanel Width="350" HorizontalAlignment="Left">
+                    <StackPanel Width="440" HorizontalAlignment="Left">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Margin" Value="0,10,10,0"/>
@@ -35,7 +35,11 @@
                             </Style>
                         </StackPanel.Resources>
                         <TextBox x:Name="QuestionTitle" Text="{Binding QuestionTitle}" FontSize="18" TextWrapping="Wrap"/>
-                        <StackPanel Orientation="Horizontal" Width="339">
+                        <!--<StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="QuestionID" Text="{Binding QuestionID}" FontSize="18" Width="30"></TextBox>
+                            <Label Content="Question ID" Width="80"> </Label>
+                        </StackPanel>-->
+                        <StackPanel Orientation="Horizontal" Width="410">
                             <ComboBox Width="150" Height="20" SelectedIndex="0" Margin="0,10"
                                       ItemsSource="{Binding Questions}" SelectedItem="{Binding SelectedQuestion}" >
                                 <!--<ComboBoxItem Content="Question #1"/>
@@ -45,8 +49,10 @@
                             </ComboBox>
                             <Button x:Name="ButtonAddSaveQuestion"  Content="Add new" Width="70" Height="20" Margin="10, 0"
                                     Background="LightBlue" HorizontalAlignment="Left" Command="{Binding ButtonAddSaveQuestion_Click}"/>
-                            <Button Content="Delete" Width="70" Height="20" Margin="0, 0" Background="#fff" HorizontalAlignment="Left"
-                                    Command="{Binding ButtonDeleteQuestion_Click}"/>
+                            <Button Content="Delete" Width="70" Height="20" Margin="1, 0" Background="#fff" HorizontalAlignment="Left"
+                                    Command="{Binding ButtonDeleteQuestion_Click}" IsEnabled="{Binding IsQuestionSelected}"/>
+                            <Button Content="Save" Width="70" Height="20" Margin="10, 0" Background="#fff" HorizontalAlignment="Left"
+                                    Command="{Binding ButtonSaveQuestion_Click}" IsEnabled="{Binding IsQuestionSelected}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
@@ -115,7 +121,8 @@
                     </Style>
                 </StackPanel.Resources>
                 <Button x:Name="ButtonAddSaveQuiz" Content="Add/Save Quiz" Width="150" Height="20" Background="LightBlue" Command="{Binding ButtonAddSaveQuiz_Click}" />
-                <Button Content="Save to database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonAddSaveToDB_Click}" />
+                <Button Content="Save to database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonAddSaveToDB_Click}"
+                        IsEnabled="{Binding Is_both_quiz_and_question_selected}"/>
                 <Button Content="Load from database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonLoadFromDB_Click}"/>
             </StackPanel>
         </StackPanel>

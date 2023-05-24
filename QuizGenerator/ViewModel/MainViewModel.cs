@@ -17,15 +17,71 @@ namespace QuizGenerator.ViewModel
         //zdarzenie wywoływane w chwili zmiany własności o której chcemy powiadomić
         //żeby zaktualizowany został widok
 
+        private bool isQuizSelected = false;
 
+        public bool IsQuizSelected
+        {
+            get { return isQuizSelected; }
+            set
+            {
+                isQuizSelected = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuizSelected)));
+            }
+        }
+
+        bool is_both_quiz_and_question_selected = false;
+
+        public bool Is_both_quiz_and_question_selected
+        {
+            get { return is_both_quiz_and_question_selected; }
+            set
+            {
+                is_both_quiz_and_question_selected = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is_both_quiz_and_question_selected)));
+            }
+        }
+
+        private bool isQuestionSelected = false;
+
+        public bool IsQuestionSelected
+        {
+            get { return isQuestionSelected; }
+            set
+            {
+                isQuestionSelected = value;
+                if(isQuestionSelected == true && isQuizSelected == true) {
+                    Is_both_quiz_and_question_selected = true;
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionSelected)));
+            }
+        }
 
         private string quizTitle = "Quiz Title";
 
-        public string QuizTitle { get { return quizTitle; } set { quizTitle = value; } }
+        public string QuizTitle { get { return quizTitle; } 
+            set { quizTitle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(QuizTitle)));
+            }
+        }
 
         private string questionTitle = "Question Title";
 
-        public string QuestionTitle { get { return questionTitle; } set { questionTitle = value; } }
+        public string QuestionTitle { get { return questionTitle; }
+            set { questionTitle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(QuestionTitle)));
+            }
+        }
+        
+        //private int questionID = 1;
+        //public int QuestionID
+        //{
+        //    get { return questionID; }
+        //    set
+        //    {
+        //        questionID = value;
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(QuestionID)));
+        //    }
+        //}
 
         private Question selectedQuestion;
 
@@ -34,9 +90,16 @@ namespace QuizGenerator.ViewModel
             get { return selectedQuestion; }
             set
             {
-                if (selectedQuestion != value)
-                {
+                //if (selectedQuestion != value)
+                //{
+                    if (value == null)
+                    {
+                    return;
+                    }
+                    IsQuestionSelected = true;
                     selectedQuestion = value;
+
+                    QuestionTitle = selectedQuestion.Title;
                     Answer1content = selectedQuestion.Answers[0].Content ?? "";
                     Answer2content = selectedQuestion.Answers[1].Content ?? "";
                     Answer3content = selectedQuestion.Answers[2].Content ?? "";
@@ -47,7 +110,9 @@ namespace QuizGenerator.ViewModel
                     Answer3Is_correct = selectedQuestion.Answers[2].Is_correct;
                     Answer4Is_correct = selectedQuestion.Answers[3].Is_correct;
 
-                }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedQuestion)));
+
+                //}
             }
         }
 
@@ -58,17 +123,20 @@ namespace QuizGenerator.ViewModel
             get { return selectedQuiz; }
             set
             {
-                if (selectedQuiz != value)
-                {
+                //if (selectedQuiz != value)
+                //{
                     selectedQuiz = value;
+                    if(selectedQuiz == null) { return; }
+                    IsQuizSelected = true;
                     QuizTitle = selectedQuiz.Title;
+                    QuizTimeSpan = selectedQuiz.TimeSpan;
                     Questions = new BindingList<Question>();
                     foreach (Question question in selectedQuiz.Questions)
                     {
                         Questions.Add(question);
-                        selectedQuestion = question;
+                        //selectedQuestion = question;
                     }
-
+                    IsQuestionSelected = false;
                     //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
                     //    listy/bindinglisty/pojedynczych obiektów (iteratorem?) Questions 
 
@@ -85,7 +153,7 @@ namespace QuizGenerator.ViewModel
                     //Answer3Is_correct = SelectedQuiz.Questions[0].Answers[2].Is_correct;
                     //Answer4Is_correct = SelectedQuiz.Questions[0].Answers[3].Is_correct;
 
-                }
+                //}
             }
         }
 
@@ -291,7 +359,49 @@ namespace QuizGenerator.ViewModel
                             new Question.Answer() { Is_correct = Answer4Is_correct, Content = Answer4content }
                         };
                         Questions.Add(question);
+                        //if (SelectedQuiz !=null && SelectedQuiz.Questions.Contains(SelectedQuestion))
+                        //{
+                        //    SelectedQuiz.Questions.Remove(SelectedQuestion);
+                        //}
+                        selectedQuiz?.Questions.Add(question);
                         SelectedQuestion = question;
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+            }
+        }
+
+        private ICommand buttonSaveQuestion_Click;
+
+        public ICommand ButtonSaveQuestion_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonSaveQuestion_Click ?? (buttonSaveQuestion_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) =>
+                    {
+                        Question question = SelectedQuestion;
+                        question.Title = QuestionTitle;
+                        //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
+                        question.Answers = new List<Question.Answer>();
+                        //question.Answers.AddRange(Answers.Select(i => new Question.Answer()
+                        //{
+                        //    Is_correct = i.Is_correct,
+                        //    Content = i.Content
+                        //}));
+                        //TODO: loop over like above
+                        question.Answers = new List<Question.Answer>
+                        {
+                            new Question.Answer() { Is_correct = Answer1Is_correct, Content = Answer1content },
+                            new Question.Answer() { Is_correct = Answer2Is_correct, Content = Answer2content },
+                            new Question.Answer() { Is_correct = Answer3Is_correct, Content = Answer3content },
+                            new Question.Answer() { Is_correct = Answer4Is_correct, Content = Answer4content }
+                        };
                     }
                     ,
                     //warunek kiedy może je wykonać
@@ -315,17 +425,23 @@ namespace QuizGenerator.ViewModel
                     {
                         Quiz currentQuiz = new Quiz();
                         currentQuiz.Title = QuizTitle;
-
                         currentQuiz.Questions = new List<Question>();
-                        currentQuiz.Questions.AddRange(Questions.Select(i => new Question()
-                        {
-                            Id = i.Id,
-                            Title = i.Title,
-                            Answers = i.Answers,
-                        }));
-
+                        //if (Quizes.Contains(selectedQuiz))
+                        //{
+                        //    currentQuiz.Questions.AddRange(Questions.Select(i => new Question()
+                        //    {
+                        //        Id = i.Id,
+                        //        Answers = i.Answers,
+                        //        Title = i.Title,
+                        //    }));
+                        //}
                         currentQuiz.TimeSpan = QuizTimeSpan;
+                        //if (Quizes.Contains(SelectedQuiz))
+                        //{
+                        //    Quizes.Remove(SelectedQuiz);
+                        //}
                         Quizes.Add(currentQuiz);
+
                         Test = "zmieniony";
 
                     }
@@ -347,21 +463,26 @@ namespace QuizGenerator.ViewModel
                     //co wykonuje polecenie
                     (p) =>
                     {
-
+                        int quiz_id = 1;
+                        int question_id = 1;
+                        int answer_id = 1;
                         DataWrite dataWrite = new DataWrite();
                         foreach (Quiz quiz in Quizes)
                         {
-                            dataWrite.InsertQuiz(quiz.Id, quiz.Title, quiz.TimeSpan);
-                            foreach(Question question in quiz.Questions)
+                            dataWrite.InsertQuiz(quiz_id, quiz.Title, quiz.TimeSpan);
+                            
+                            foreach (Question question in quiz.Questions)
                             {
-                                dataWrite.InsertQuestion(question.Id,question.Title ,quiz.Id);
-                                int answer_id = 1;
+                                dataWrite.InsertQuestion(question_id,question.Title ,quiz_id);
                                 foreach(Question.Answer answer in question.Answers)
                                 {
-                                    dataWrite.InsertAnswers(answer_id, answer.Content, answer.Is_correct, question.Id);
+                                    dataWrite.InsertAnswers(answer_id, answer.Content, answer.Is_correct, question_id);
                                     answer_id++;
                                 }
+                                question_id++;
+
                             }
+                            quiz_id++;
 
                         }
                     }
@@ -385,7 +506,7 @@ namespace QuizGenerator.ViewModel
                     (p) =>
                     {
                         DataAccess dataAccess = new DataAccess();
-                         quizes = dataAccess.LoadData();
+                         Quizes = dataAccess.LoadData();
                         
                     }
                     ,
