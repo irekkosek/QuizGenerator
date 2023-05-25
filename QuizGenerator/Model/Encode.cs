@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace QuizGenerator.Model
 {
 
-    public static class Encode
+    public static class Encryption
     {
         public static string Base64Encode(string plainText)
         {
@@ -19,6 +19,7 @@ namespace QuizGenerator.Model
         {
             byte[] bytes = Convert.FromBase64String(base64EncodedText);
             return System.Text.Encoding.UTF8.GetString(bytes);
+            //return base64EncodedText;
         }
     }
 }

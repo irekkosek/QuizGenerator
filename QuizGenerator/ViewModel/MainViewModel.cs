@@ -136,7 +136,7 @@ namespace QuizGenerator.ViewModel
                         Questions.Add(question);
                         //selectedQuestion = question;
                     }
-                    IsQuestionSelected = false;
+                    //IsQuestionSelected = false;
                     //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
                     //    listy/bindinglisty/pojedynczych obiektów (iteratorem?) Questions 
 
@@ -320,6 +320,8 @@ namespace QuizGenerator.ViewModel
                     (p) =>
                     {
                         Questions.Remove(selectedQuestion);
+                        selectedQuiz.Questions.Remove(selectedQuestion);
+                      
                     }
                     ,
                     //warunek kiedy może je wykonać
@@ -467,6 +469,7 @@ namespace QuizGenerator.ViewModel
                         int question_id = 1;
                         int answer_id = 1;
                         DataWrite dataWrite = new DataWrite();
+                        dataWrite.ClearDBBeforeWrite();
                         foreach (Quiz quiz in Quizes)
                         {
                             dataWrite.InsertQuiz(quiz_id, quiz.Title, quiz.TimeSpan);
@@ -506,7 +509,7 @@ namespace QuizGenerator.ViewModel
                     (p) =>
                     {
                         DataAccess dataAccess = new DataAccess();
-                         Quizes = dataAccess.LoadData();
+                        Quizes = dataAccess.LoadData(LoadFile.Showdialog());
                         
                     }
                     ,

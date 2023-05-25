@@ -11,13 +11,17 @@ namespace QuizGenerator.Model
 
     public class DataAccess
     {
-        public BindingList<Quiz> LoadData()
+        public BindingList<Quiz> LoadData(string fileName = "QuizSolver.db")
         {
             List<Question.Answer> _answers = new List<Question.Answer>();
             List<Question> _questions = new List<Question>();
             BindingList<Quiz> _quizzes = new BindingList<Quiz>();
+
+            string connectionString = @"Data Source=" + fileName + ";Version=3";
+
+
             //using (var conn = new SQLiteConnection("Data Source=QuizSolverDB.db"))
-            using (var conn = new SQLiteConnection(@"Data Source=QuizSolver.db;Version=3"))
+            using (var conn = new SQLiteConnection(connectionString))
 
             {
                 conn.Open();
@@ -50,16 +54,16 @@ namespace QuizGenerator.Model
                                         {
                                             if (readerAns.GetInt16(3) == QuestID && readerAns.GetInt16(4) == QuizID)
                                             {
-                                                _answers.Add(new Question.Answer(Encode.Base64Decode(readerAns.GetString(1)), readerAns.GetBoolean(2)));
+                                                _answers.Add(new Question.Answer(Encryption.Base64Decode(readerAns.GetString(1)), readerAns.GetBoolean(2)));
                                             }
                                         }
                                     }
-                                    _questions.Add(new Question(readerQuest.GetInt16(0), Encode.Base64Decode(readerQuest.GetString(1)), new List<Question.Answer>(_answers)));
+                                    _questions.Add(new Question(readerQuest.GetInt16(0), Encryption.Base64Decode(readerQuest.GetString(1)), new List<Question.Answer>(_answers)));
                                 }
 
                             }
                         }
-                        _quizzes.Add(new Quiz(QuizID, Encode.Base64Decode(readerQuiz.GetString(1)), new List<Question>(_questions), readerQuiz.GetInt16(2)));
+                        _quizzes.Add(new Quiz(QuizID, Encryption.Base64Decode(readerQuiz.GetString(1)), new List<Question>(_questions), readerQuiz.GetInt16(2)));
                     }
                 }
                 conn.Close();
