@@ -11,7 +11,13 @@ namespace QuizGenerator.Model
 {
     internal class DataWrite
     {
-        private string connectionString = @"Data Source=QuizSolver.db;Version=3";
+        private string fileName;
+        public DataWrite(string fileName = "QuizSolver.db") {
+            this.fileName= fileName;
+            connectionString = @"Data Source=" + fileName + ";Version=3";
+        }
+        string connectionString = @"Data Source=QuizSolver.db;Version=3";
+        //private string connectionString = @"Data Source=QuizSolver.db;Version=3";
         public void ClearDBBeforeWrite()
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))

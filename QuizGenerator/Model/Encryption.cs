@@ -17,9 +17,12 @@ namespace QuizGenerator.Model
 
         public static string Base64Decode(string base64EncodedText)
         {
-            byte[] bytes = Convert.FromBase64String(base64EncodedText);
-            return System.Text.Encoding.UTF8.GetString(bytes);
-            //return base64EncodedText;
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64EncodedText);
+                return System.Text.Encoding.UTF8.GetString(bytes);
+            }
+            catch { return base64EncodedText; }
         }
     }
 }

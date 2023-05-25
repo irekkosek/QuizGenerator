@@ -530,7 +530,7 @@ namespace QuizGenerator.ViewModel
                         int quiz_id = 1;
                         int question_id = 1;
                         int answer_id = 1;
-                        DataWrite dataWrite = new DataWrite();
+                        DataWrite dataWrite = new DataWrite(LoadFile.Showdialog());
                         dataWrite.ClearDBBeforeWrite();
                         foreach (Quiz quiz in Quizes)
                         {
