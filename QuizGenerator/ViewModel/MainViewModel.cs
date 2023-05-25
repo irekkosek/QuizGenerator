@@ -136,22 +136,22 @@ namespace QuizGenerator.ViewModel
                         Questions.Add(question);
                         //selectedQuestion = question;
                     }
-                    //IsQuestionSelected = false;
-                    //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
-                    //    listy/bindinglisty/pojedynczych obiektów (iteratorem?) Questions 
+                IsQuestionSelected = false;
+                //dać foreach do inicjalizatora Questions linijke wyżej, jak nie to jakis sposób zwracania (może funkcja)
+                //    listy/bindinglisty/pojedynczych obiektów (iteratorem?) Questions 
 
-                    //selectedQuestion = Questions
+                //selectedQuestion = Questions
 
-                    //Questions = SelectedQuiz.Questions
-                    //Answer1content = SelectedQuiz.Questions[0].Answers[0].Content;
-                    //Answer2content = SelectedQuiz.Questions[0].Answers[1].Content;
-                    //Answer3content = SelectedQuiz.Questions[0].Answers[2].Content;
-                    //Answer4content = SelectedQuiz.Questions[0].Answers[3].Content;
+                //Questions = SelectedQuiz.Questions
+                //Answer1content = SelectedQuiz.Questions[0].Answers[0].Content;
+                //Answer2content = SelectedQuiz.Questions[0].Answers[1].Content;
+                //Answer3content = SelectedQuiz.Questions[0].Answers[2].Content;
+                //Answer4content = SelectedQuiz.Questions[0].Answers[3].Content;
 
-                    //Answer1Is_correct = SelectedQuiz.Questions[0].Answers[0].Is_correct;
-                    //Answer2Is_correct = SelectedQuiz.Questions[0].Answers[1].Is_correct;
-                    //Answer3Is_correct = SelectedQuiz.Questions[0].Answers[2].Is_correct;
-                    //Answer4Is_correct = SelectedQuiz.Questions[0].Answers[3].Is_correct;
+                //Answer1Is_correct = SelectedQuiz.Questions[0].Answers[0].Is_correct;
+                //Answer2Is_correct = SelectedQuiz.Questions[0].Answers[1].Is_correct;
+                //Answer3Is_correct = SelectedQuiz.Questions[0].Answers[2].Is_correct;
+                //Answer4Is_correct = SelectedQuiz.Questions[0].Answers[3].Is_correct;
 
                 //}
             }
@@ -249,19 +249,16 @@ namespace QuizGenerator.ViewModel
 
 
         private int quizTimeSpan = 20;
-        public int QuizTimeSpan { get => quizTimeSpan; set => quizTimeSpan = value; }
+        public int QuizTimeSpan { get => quizTimeSpan;
+            set { quizTimeSpan = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(QuizTimeSpan))); } }
 
 
-        //private Quiz currentQuiz;
+    //private Quiz currentQuiz;
 
-        //public Quiz CurrentQuiz { get {
-        //        return currentQuiz ?? (currentQuiz = new Quiz()); } set { currentQuiz = value; } } 
+    //public Quiz CurrentQuiz { get {
+    //        return currentQuiz ?? (currentQuiz = new Quiz()); } set { currentQuiz = value; } } 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private Model.Lottery lottery = new Model.Lottery();
-
-
+    public event PropertyChangedEventHandler PropertyChanged;
 
 
         //private List<Quiz> quizes;
@@ -290,6 +287,7 @@ namespace QuizGenerator.ViewModel
             {
                 quizes = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Quizes)));
+                
             }
         }
         private string test = "";
@@ -321,7 +319,32 @@ namespace QuizGenerator.ViewModel
                     {
                         Questions.Remove(selectedQuestion);
                         selectedQuiz.Questions.Remove(selectedQuestion);
+                        IsQuestionSelected = false; //might_breake
                       
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+            }
+        }
+        //polecenie 
+        private ICommand buttonDeleteQuiz_Click;
+
+        public ICommand ButtonDeleteQuiz_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonDeleteQuiz_Click ?? (buttonDeleteQuiz_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) =>
+                    {
+                        Quizes.Remove(selectedQuiz);
+                        IsQuestionSelected = false;
+                        IsQuizSelected = false;
+
                     }
                     ,
                     //warunek kiedy może je wykonać
@@ -453,6 +476,45 @@ namespace QuizGenerator.ViewModel
                     );
             }
         }
+        private ICommand buttonSaveQuiz_Click;
+
+        public ICommand ButtonSaveQuiz_Click
+        {
+            get
+            {
+                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
+                //pomocniczy typ RelayCommand
+                return buttonSaveQuiz_Click ?? (buttonSaveQuiz_Click = new BaseClass.RelayCommand(
+                    //co wykonuje polecenie
+                    (p) =>
+                    {
+                        Quiz quiz = SelectedQuiz;
+                        quiz.Title = QuizTitle;
+                        //skopiuj elementy z Property BidnigList<Answer> Answers do List<Answer> Question.Answers  
+                        quiz.Questions = new List<Question>();
+                        if (Quizes.Contains(selectedQuiz))
+                        {
+                            quiz.Questions.AddRange(Questions.Select(i => new Question()
+                            {
+                                Id = i.Id,
+                                Answers = i.Answers,
+                                Title = i.Title,
+                            }));
+                        }
+                        //TODO: loop over like above
+                        quiz.TimeSpan = QuizTimeSpan;
+                        int index = Quizes.IndexOf(SelectedQuiz);
+                        Quizes.ResetItem(index);
+                        //Quizes.Remove(SelectedQuiz);
+
+                    }
+                    ,
+                    //warunek kiedy może je wykonać
+                    p => true)
+                    );
+            }
+        }
+
         private ICommand buttonAddSaveToDB_Click;
 
         public ICommand ButtonAddSaveToDB_Click

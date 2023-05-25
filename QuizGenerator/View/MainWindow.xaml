@@ -8,7 +8,7 @@
         xmlns:viewmodel="clr-namespace:QuizGenerator.ViewModel" 
         xmlns:Model="clr-namespace:QuizGenerator.Model" x:Class="QuizGenerator.View.MainWindow" 
         mc:Ignorable="d"
-        Title="Quiz Generator" Height="450" Width="800">
+        Title="Quiz Generator" Height="460" Width="1115">
 
     <!--d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
     nie wolno używać w atrybutach tagu <Window takiego sposobu definiowania
@@ -19,7 +19,7 @@
 
     <StackPanel Orientation="Horizontal">
         <StackPanel Margin="10">
-            <TextBox x:Name="QuizTitle" Text="{Binding QuizTitle}"  FontSize="24" Margin="0,0 ,0, 10" Width="500" TextWrapping="Wrap"/>
+            <TextBox x:Name="QuizTitle" Text="{Binding QuizTitle}" HorizontalAlignment="Left" FontSize="24" Margin="0,0 ,0, 10" Width="500" TextWrapping="Wrap"/>
             <Border BorderBrush="LightBlue" BorderThickness="1" IsEnabled="{Binding IsQuizSelected}">
                 <StackPanel Margin="10" Orientation="Vertical">
                     <StackPanel.Resources>
@@ -121,6 +121,10 @@
                     </Style>
                 </StackPanel.Resources>
                 <Button x:Name="ButtonAddSaveQuiz" Content="Add/Save Quiz" Width="150" Height="20" Background="LightBlue" Command="{Binding ButtonAddSaveQuiz_Click}" />
+                <Button Content="Save Quiz" Width="150" Height="20" Background="#fff" Command="{Binding ButtonSaveQuiz_Click}"
+                        IsEnabled="{Binding IsQuizSelected}"/>
+                <Button Content="Delete Quiz" Width="150" Height="20" Background="#fff" Command="{Binding ButtonDeleteQuiz_Click}"
+                        IsEnabled="{Binding IsQuizSelected}"/>
                 <Button Content="Save to database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonAddSaveToDB_Click}"
                         IsEnabled="{Binding Is_both_quiz_and_question_selected}"/>
                 <Button Content="Load from database" Width="150" Height="20" Background="#fff" Command="{Binding ButtonLoadFromDB_Click}"/>
@@ -128,7 +132,7 @@
         </StackPanel>
         <StackPanel Margin="10">
             <Border BorderBrush="LightBlue" BorderThickness="1">
-                <ListBox x:Name="ListBoxQuizes" Width="240" MinHeight="200"
+                <ListBox x:Name="ListBoxQuizes" Width="240" MinHeight="400" FontSize="14"
                        ItemsSource="{Binding Quizes}" SelectedItem="{Binding SelectedQuiz}" >
                     <!--<ListBox.ItemTemplate>
                         <DataTemplate>
@@ -157,7 +161,7 @@
                 Wybieramy więc Properties Title z klasy Quiz-->
 
             </Border>
-            <TextBox  Text="{Binding Test}" ></TextBox>
+            <!--<TextBox  Text="{Binding Test}" ></TextBox>-->
         </StackPanel>
     </StackPanel>
 </Window>
